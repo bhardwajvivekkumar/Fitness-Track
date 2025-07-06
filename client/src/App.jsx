@@ -10,6 +10,7 @@ import Workouts from "./pages/Workouts";
 import Tutorial from "./pages/Tutorial";
 import Blogs from "./pages/blogs";
 import BlogDetail from "./pages/BlogDetail";
+import Contact from "./pages/Contact";
 
 const Container = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ function App() {
               <Route path="/tutorials" exact element={<Tutorial />} />
               <Route path="/blogs" exact element={<Blogs />} />
               <Route path="/blog/:index" exact element={<BlogDetail />} />
+              <Route path="/contact" exact element={<Contact />} />
             </Routes>
           </Container>
         ) : (
