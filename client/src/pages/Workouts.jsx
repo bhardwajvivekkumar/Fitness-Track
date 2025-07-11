@@ -4,7 +4,7 @@ import WorkoutCard from "../component/cards/WorkoutCard";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers";
-// import { getWorkouts } from "../api";
+import { getWorkouts } from "../api";
 import { CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 
@@ -73,24 +73,24 @@ const SecTitle = styled.div`
 `;
 
 const Workouts = () => {
-  // const dispatch = useDispatch();
-  // const [todaysWorkouts, setTodaysWorkouts] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [date, setDate] = useState("");
+  const dispatch = useDispatch();
+  const [todaysWorkouts, setTodaysWorkouts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState("");
 
-  // const getTodaysWorkout = async () => {
-  //   setLoading(true);
-  //   const token = localStorage.getItem("fittrack-app-token");
-  //   await getWorkouts(token, date ? `?date=${date}` : "").then((res) => {
-  //     setTodaysWorkouts(res?.data?.todaysWorkouts);
-  //     console.log(res.data);
-  //     setLoading(false);
-  //   });
-  // };
+  const getTodaysWorkout = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("fittrack-app-token");
+    await getWorkouts(token, date ? `?date=${date}` : "").then((res) => {
+      setTodaysWorkouts(res?.data?.todaysWorkouts);
+      console.log(res.data);
+      setLoading(false);
+    });
+  };
 
-  // useEffect(() => {
-  //   getTodaysWorkout();
-  // }, [date]);
+  useEffect(() => {
+    getTodaysWorkout();
+  }, [date]);
   return (
     <Container>
       <Wrapper>
@@ -105,18 +105,15 @@ const Workouts = () => {
         <Right>
           <Section>
             <SecTitle>Todays Workout</SecTitle>
-            {/* {loading ? (
+            {loading ? (
               <CircularProgress />
-            ) : ( */}
-            <CardWrapper>
-              <WorkoutCard />
-              <WorkoutCard />
-              <WorkoutCard />
-              <WorkoutCard />
-              <WorkoutCard />
-              <WorkoutCard />
-            </CardWrapper>
-            {/* )} */}
+            ) : (
+              <CardWrapper>
+                {todaysWorkouts.map((workout) => (
+                  <WorkoutCard workout={workout} />
+                ))}
+              </CardWrapper>
+            )}
           </Section>
         </Right>
       </Wrapper>

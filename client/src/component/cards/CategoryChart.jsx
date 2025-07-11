@@ -29,6 +29,7 @@ const CategoryChart = ({ data }) => {
   return (
     <Card>
       <Title>Weekly Calories Burned</Title>
+      {/* {console.log(data?.pieChartData)} */}
       {data?.pieChartData && (
         <PieChart
           series={[

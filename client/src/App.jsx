@@ -11,6 +11,7 @@ import Tutorial from "./pages/Tutorial";
 import Blogs from "./pages/blogs";
 import BlogDetail from "./pages/BlogDetail";
 import Contact from "./pages/Contact";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   width: 100%;
@@ -25,14 +26,14 @@ const Container = styled.div`
 `;
 
 function App() {
-  const [user, SetUser] = useState(true);
+  const { currentUser } = useSelector((state) => state.user);
 
   return (
     <ThemeProvider theme={lightTheme}>
       <BrowserRouter>
-        {user ? (
+        {currentUser ? (
           <Container>
-            <Navbar />
+            <Navbar currentUser={currentUser} />
             <Routes>
               <Route path="/" exact element={<Dashboard />} />
               <Route path="/Workouts" exact element={<Workouts />} />
