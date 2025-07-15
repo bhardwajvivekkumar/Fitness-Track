@@ -1,6 +1,7 @@
 import { FitnessCenterRounded, TimelapseRounded } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
+import { Delete } from "@mui/icons-material";
 
 const Card = styled.div`
   flex: 1;
@@ -50,10 +51,43 @@ const Details = styled.div`
   align-items: center;
   gap: 6px;
 `;
+const DeleteBtn = styled.button`
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 14px;
+  cursor: pointer;
+  align-self: flex-end;
+`;
 
-const WorkoutCard = ({ workout }) => {
+// const WorkoutCard = ({ workout }) => {
+//   return (
+//     <Card>
+//       <Category>#{workout?.category}</Category>
+//       <Name>{workout?.workoutName}</Name>
+//       <Sets>
+//         Count: {workout?.sets} sets X {workout?.reps} reps
+//       </Sets>
+//       <Flex>
+//         <Details>
+//           <FitnessCenterRounded sx={{ fontSize: "20px" }} />
+//           {workout?.weight} kg
+//         </Details>
+//         <Details>
+//           <TimelapseRounded sx={{ fontSize: "20px" }} />
+//           {workout?.duration} min
+//         </Details>
+//       </Flex>
+//     </Card>
+//   );
+// };
+
+const WorkoutCard = ({ workout, onDelete }) => {
   return (
     <Card>
+      <DeleteBtn onClick={() => onDelete(workout._id)}>
+        <Delete fontSize="small" />
+      </DeleteBtn>
       <Category>#{workout?.category}</Category>
       <Name>{workout?.workoutName}</Name>
       <Sets>

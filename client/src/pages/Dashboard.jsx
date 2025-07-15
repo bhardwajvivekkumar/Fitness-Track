@@ -6,7 +6,12 @@ import WeeklyStatCard from "../component/cards/WeeklyStatCard";
 import CategoryChart from "../component/cards/CategoryChart";
 import AddWorkout from "../component/AddWorkout";
 import WorkoutCard from "../component/cards/WorkoutCard";
-import { addWorkout, GetDashboardDetails, getWorkouts } from "../api";
+import {
+  addWorkout,
+  GetDashboardDetails,
+  getWorkouts,
+  deleteWorkout,
+} from "../api";
 
 const Container = styled.div`
   flex: 1;
@@ -79,7 +84,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("fittrack-app-token");
     await GetDashboardDetails(token).then((res) => {
       setData(res.data);
-      console.log(res.data);
+      // console.log(res.data);
       setLoading(false);
     });
   };
@@ -88,7 +93,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("fittrack-app-token");
     await getWorkouts(token, "").then((res) => {
       setTodaysWorkouts(res?.data?.todaysWorkouts);
-      console.log(res.data);
+      // console.log(res.data);
       setLoading(false);
     });
   };
@@ -103,8 +108,28 @@ const Dashboard = () => {
         setButtonLoading(false);
       })
       .catch((err) => {
-        alert(err);
+        const message =
+          err?.response?.data?.message ||
+          "Something went wrong. Please try again.";
+        alert(message);
+        console.error("Workout Add Error:", err?.response || err);
+        setButtonLoading(false);
       });
+  };
+  const handleDeleteWorkout = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this workout?"
+    );
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("fittrack-app-token");
+      await deleteWorkout(token, id);
+      getTodaysWorkout(); // refresh the list
+    } catch (err) {
+      alert("Failed to delete workout");
+      console.error("Delete Error:", err);
+    }
   };
 
   useEffect(() => {
@@ -136,7 +161,11 @@ const Dashboard = () => {
           <Title>Todays Workouts</Title>
           <CardWrapper>
             {todaysWorkouts.map((workout) => (
-              <WorkoutCard workout={workout} />
+              <WorkoutCard
+                key={workout._id}
+                workout={workout}
+                onDelete={handleDeleteWorkout}
+              />
             ))}
           </CardWrapper>
         </Section>

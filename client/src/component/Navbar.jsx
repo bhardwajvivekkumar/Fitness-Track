@@ -30,6 +30,7 @@ const NavContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   font-size: 1rem;
+  position: relative;
 `;
 
 const NavLogo = styled(LinkR)`
@@ -48,9 +49,17 @@ const Logo = styled.img`
   height: 42px;
 `;
 
+const IconMenuWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
 const Mobileicon = styled.div`
   color: ${({ theme }) => theme.text_primary};
   display: none;
+  cursor: pointer;
+
   @media screen and (max-width: 768px) {
     display: flex;
     align-items: center;
@@ -70,6 +79,7 @@ const NavItems = styled.ul`
     display: none;
   }
 `;
+
 const Navlink = styled(NavLink)`
   display: flex;
   align-items: center;
@@ -111,49 +121,58 @@ const TextButton = styled.div`
 `;
 
 const MobileMenu = styled.ul`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 16px;
-  padding: 0 6px;
-  list-style: none;
-  width: 90%;
-  padding: 12px 40px 24px 40px;
-  background: ${({ theme }) => theme.bg};
-  position: absolute;
-  top: 80px;
-  right: 0;
-  transition: all 0.6s ease-in-out;
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
-  transform: ${({ isOpen }) =>
-    isOpen ? "translateY(0)" : "translateY(-100%)"};
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
-  z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+    position: absolute;
+    top: 40px;
+    right: -180px;
+    width: 180px;
+    background: ${({ theme }) => theme.bg};
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    flex-direction: column;
+    z-index: 1000;
+  }
 `;
 
 const Navbar = ({ currentUser }) => {
   const dispatch = useDispatch();
   const [isOpen, setisOpen] = useState(false);
+
   return (
     <Nav>
       <NavContainer>
-        <Mobileicon onClick={() => setisOpen((prev) => !prev)}>
-          <MenuRounded sx={{ color: "inherit" }} />
-        </Mobileicon>
+        <IconMenuWrapper>
+          <Mobileicon onClick={() => setisOpen((prev) => !prev)}>
+            <MenuRounded sx={{ color: "inherit" }} />
+          </Mobileicon>
+
+          <MobileMenu $isOpen={isOpen}>
+            <Navlink to="/" onClick={() => setisOpen(false)}>
+              Dashboard
+            </Navlink>
+            <Navlink to="/workouts" onClick={() => setisOpen(false)}>
+              Workouts
+            </Navlink>
+            <Navlink to="/tutorials" onClick={() => setisOpen(false)}>
+              Tutorials
+            </Navlink>
+            <Navlink to="/blogs" onClick={() => setisOpen(false)}>
+              Blogs
+            </Navlink>
+            <Navlink to="/contact" onClick={() => setisOpen(false)}>
+              Contact
+            </Navlink>
+          </MobileMenu>
+        </IconMenuWrapper>
+
         <NavLogo to="/">
           <Logo src={LogoImg} />
           Fittrack
         </NavLogo>
-
-        <MobileMenu $isOpen={isOpen}>
-          <Navlink to="/">Dashboard</Navlink>
-          <Navlink to="/workouts">Workouts</Navlink>
-          <Navlink to="/tutorials">Tutorials</Navlink>
-          <Navlink to="/blogs">Blogs</Navlink>
-          <Navlink to="/contact">Contact</Navlink>
-        </MobileMenu>
 
         <NavItems>
           <Navlink to="/">Dashboard</Navlink>

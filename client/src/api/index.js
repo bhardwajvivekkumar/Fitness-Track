@@ -5,7 +5,7 @@ const API = axios.create({
 });
 
 export const UserSignUp = async (data) => API.post("/user/signup", data);
-export const UserSignIn = async (data) => API.post("/user/signin", data);
+export const UserSignIn = async (data) => API.post("/user/login", data);
 
 export const GetDashboardDetails = async (token) =>
   API.get("/user/dashboard", {
@@ -21,3 +21,11 @@ export const addWorkout = async (token, data) =>
   await API.post(`/user/workout`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+export const deleteWorkout = async (token, workoutId) => {
+  return API.delete(`/user/workout/${workoutId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

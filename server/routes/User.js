@@ -3,6 +3,7 @@ import {
   UserLogin,
   UserRegister,
   addWorkout,
+  deleteWorkout,
   getUserDashboard,
   getWorkoutsByDate,
 } from "../controllers/UserController.js";
@@ -16,5 +17,6 @@ router.post("/login", UserLogin);
 router.get("/dashboard", verifyToken, getUserDashboard);
 router.get("/workout", verifyToken, getWorkoutsByDate);
 router.post("/workout", verifyToken, addWorkout);
+router.delete("/workout/:id", verifyToken, deleteWorkout);
 
 export default router;

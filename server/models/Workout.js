@@ -14,7 +14,6 @@ const WorkoutSchema = new mongoose.Schema(
     workoutName: {
       type: String,
       required: true,
-      unique: true,
     },
     sets: {
       type: Number,
@@ -38,5 +37,7 @@ const WorkoutSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+WorkoutSchema.index({ user: 1, workoutName: 1, date: 1 }, { unique: true });
 
 export default mongoose.model("Workout", WorkoutSchema);

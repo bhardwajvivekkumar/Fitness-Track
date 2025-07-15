@@ -24,3 +24,10 @@ body {
   border-radius: 6px;
   height: 50px;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
