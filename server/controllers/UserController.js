@@ -11,6 +11,27 @@ export const UserRegister = async (req, res, next) => {
   try {
     const { email, password, name, img } = req.body;
 
+    if (!email || !password || !name) {
+      return next(
+        createError(400, "All fields (name, email, password) are required")
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return next(createError(400, "Please enter a valid email address"));
+    }
+
+    if (password.length < 6) {
+      return next(
+        createError(400, "Password must be at least 6 characters long")
+      );
+    }
+
+    if (img && typeof img !== "string") {
+      return next(createError(400, "Image must be a valid string URL"));
+    }
+
     const existingUser = await User.findOne({ email }).exec();
     if (existingUser) {
       return next(createError(409, "Email is already in use"));
@@ -25,10 +46,13 @@ export const UserRegister = async (req, res, next) => {
       password: hashedPassword,
       img,
     });
+
     const createdUser = await user.save();
+
     const token = jwt.sign({ id: createdUser._id }, process.env.JWT, {
       expiresIn: "999 years",
     });
+
     return res.status(200).json({ token, user });
   } catch (err) {
     next(err);
